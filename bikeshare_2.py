@@ -161,23 +161,33 @@ def user_stats(df):
     user_types = df['User Type'].value_counts()
     print('\nCount of each User Type :',user_types)
 
+    # Check if we use Washington file
+    if 'Birth Year' in df:
+        # TO DO: Display counts of gender
+        gender = df['Gender'].value_counts()
+        print('\nCount of each Gender :',gender)
 
-    # TO DO: Display counts of gender
-    gender = df['Gender'].value_counts()
-    print('\nCount of each Gender :',gender)
-
-    # TO DO: Display earliest, most recent, and most common year of birth
-    df['Start Time'] = pd.to_datetime(df['Start Time'])
-
-    df['year'] = df['Start Time'].dt.year
-    print('\nThe earliest recent Year :',df['year'].min())
-    print('\nThe most recent Year :',df['year'].max())
-    print('\nThe most common year :',df['year'].mode()[0])
+        # TO DO: Display earliest, most recent, and most common year of birth
+        print('\nThe earliest recent Year :',df['Birth Year'].min())
+        print('\nThe most recent Year :',df['Birth Year'].max())
+        print('\nThe most common year :',df['Birth Year'].mode()[0])
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+    
+def raw_data(df,strt,en):
+    """Displays raw data on bikeshare users."""
+
+    print('\nDisplaying 5 raw data...\n')
+    start_time = time.time()
+    
+    #five row data to show
+    print(df.iloc[strt:en,:])
+    
+    print("\nThis took %s seconds." % (time.time() - start_time))
+    print('-'*40)
 
 def main():
     while True:
@@ -188,6 +198,16 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        strt=0
+        en=5
+        while True:
+            raw = input('\nWould you like to see raw data? Enter yes or no.\n')
+            if raw.lower() != 'yes':
+                break
+            else:
+                raw_data(df,strt,en)
+                strt=en
+                en=en+5
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
@@ -196,4 +216,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
